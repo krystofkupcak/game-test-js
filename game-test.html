@@ -9,22 +9,9 @@
         <canvas id="gameCanvas" width=800 height=600></canvas>
         <script>
             let canvas 
-            let context 
+            let context
 
-            window.onload = function() {
-                canvas = document.getElementById("gameCanvas");
-                context = canvas.getContext("2d");
-
-                let framesPerSecond = 30;
-
-                setInterval(function() {
-                    context.fillStyle = "grey";
-                    context.fillRect(0, 0, canvas.width, canvas.height);
-                
-                    player1.draw();
-                    player1.move();
-                }, 1000/framesPerSecond);
-            }
+            const RIGHT = 39;
 
             class Player {
                 constructor(x, y, width, height, color) {
@@ -33,20 +20,61 @@
                     this.width = width;
                     this.height = height;
                     this.color = color;
+
+                    this.keyHeld_RIGHT = false;
                 }
                 
-                draw() {
-                    context.fillStyle = this.color;
-                    context.fillRect(this.x, this.y, this.width, this.height);
+                draw() { 
+                    colorRect(this.x, this.y, this.width, this.height, this.color);
                 }
 
                 move() {
-                    this.x += 3;
+                    if (this.keyHeld_RIGHT){
+                        this.x += 3;
+                    }
                 }
             }
 
-            const player1 = new Player(0, 0, 10, 10, "red");
+            let player1 = new Player(0, 0, 10, 10, "red");
 
+            function keyPressed(event) {
+                if (event.keyCode == RIGHT) {
+                    player1.keyHeld_RIGHT = true;
+                }
+
+                event.preventDefault();
+            }
+
+            function keyReleased(event) {
+                if (event.keyCode == RIGHT) {
+                    player1.keyHeld_RIGHT = false;
+                }
+            }
+
+            window.onload = function() {
+                canvas = document.getElementById("gameCanvas");
+                context = canvas.getContext("2d");
+
+                let framesPerSecond = 30;
+
+                // keyboard input for document object
+                document.addEventListener("keydown", keyPressed);
+                document.addEventListener("keyup", keyReleased);
+
+                setInterval(function() {
+                    colorRect(0, 0 , canvas.width, canvas.height, "grey");
+                
+                    player1.draw();
+                    player1.move();
+                    // console.log(player1.x);
+                }, 1000/framesPerSecond);
+            }
+
+            function colorRect(x, y, width, height, color) {
+                context.fillStyle = color;
+                context.fillRect(x, y, width, height);
+            }
+  
         </script>
     </body>
 </html>
