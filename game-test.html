@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>game-test</title>
+    </head>
+
+    <body>
+        <canvas id="gameCanvas" width=800 height=600></canvas>
+        <script>
+            let canvas = document.getElementById("gameCanvas");
+            let context = canvas.getContext("2d");
+
+            class Player {
+                constructor(x, y, width, height, color) {
+                    this.x = x;
+                    this.y = y;
+                    this.width = width;
+                    this.height = height;
+                    this.color = color;
+                }
+                
+                draw() {
+                    context.fillStyle = this.color;
+                    context.fillRect(this.x, this.y, this.width, this.height);
+                }
+
+                move() {
+                    this.x += 5;
+                }
+            }
+
+            const player1 = new Player(0, 0, 10, 10, "red"); 
+
+            setInterval(function(){
+                context.fillStyle = "grey";
+                context.fillRect(0, 0, canvas.width, canvas.height);
+                
+                player1.draw();
+                player1.move();
+            }, 1000/30);
+        </script>
+    </body>
+</html>
